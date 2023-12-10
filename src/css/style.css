@@ -1,0 +1,141 @@
+body {
+  background-color: rgb(109, 185, 185);
+  font-family: Ubuntu;
+  font-weight: 500;
+  font-size: large;
+}
+
+.sheet {
+  background-color: rgb(109, 185, 185) !important;
+}
+
+.people, .noPeople, .debt {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 10px 20px;
+  border: 2px solid ghostwhite;
+  border-radius: 10px;
+  background-color: lightblue;
+  color: black;
+  min-width: 500px;
+  -webkit-column-gap: 10px;
+     -moz-column-gap: 10px;
+          column-gap: 10px;
+  margin-bottom: 3px;
+}
+
+.debt {
+  display: block;
+}
+
+.people:nth-last-child(-n+2), .noPeople:nth-last-child(-n+2), .debt:nth-last-child(-n+2) {
+  margin-bottom: 0 !important;
+}
+
+.v-card {
+  background-color: rgb(109, 185, 185) !important;
+  margin-bottom: 10px;
+}
+
+.noPeople {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  max-width: 500px;
+  max-height: 438px;
+  margin: 0 auto;
+}
+
+.next-button {
+  margin-top: 20px;
+}
+
+.people-container {
+  background-color: lightblue;
+  margin-bottom: 3px;
+  border-radius: 10px;
+}
+
+.people-container:nth-last-child(-n+2) {
+  margin-bottom: 0 !important;
+}
+
+.v-input__details {
+  display: none !important;
+}
+
+.text-field-container {
+  width: 300px;
+}
+
+.alert-button {
+  border: none;
+  background-color: rgb(251, 140, 0) s;
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  font-size: 16px;
+}
+
+.people-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 5px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  padding: 5px 0px;
+  max-width: 456px;
+  margin-left: 22px;
+}
+
+.people-item {
+  border: 2px solid gray;
+  border-radius: 10px;
+  padding: 3px;
+  max-height: 37px;
+}
+
+.people-item:hover {
+  opacity: 0.75;
+  background-color: rgb(94, 159, 159);
+  -webkit-transition: 0.15s;
+  transition: 0.15s;
+}
+
+.clicked {
+  border: 2px solid greenyellow;
+}
+
+.error {
+  border: 2px solid rgb(170, 47, 47);
+}
+
+.people-item:first-child {
+  border-color: black;
+  margin-right: 10px;
+}
+
+.result {
+  margin-top: 20px;
+  background-color: coral;
+}
+
+.resultcard {
+  margin-top: 20px;
+}
+
+.dialog {
+  margin-top: 5px;
+}
