@@ -39,9 +39,27 @@ body {
   margin-bottom: 0 !important;
 }
 
+.special {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px 20px;
+  border: 2px solid ghostwhite;
+  border-radius: 10px;
+  background-color: lightblue;
+  color: black;
+  margin-bottom: 20px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  max-width: 500px;
+  max-height: 438px;
+  margin: 20px auto;
+}
+
 .v-card {
   background-color: rgb(109, 185, 185) !important;
-  margin-bottom: 10px;
+  margin: 20px 0px;
 }
 
 .noPeople {

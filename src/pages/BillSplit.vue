@@ -1,7 +1,15 @@
 <script>
+
 import { useStorage } from '@/stores/storage'
+import ActionButton from '../components/ActionButton.vue'
+import AlertMessage from '../components/AlertMEssage.vue'
+import InputMeal from '../components/InputMeal.vue'
+import DialogWindow from '../components/DialogWindow.vue'
 
 export default {
+  components:{
+    ActionButton,AlertMessage,InputMeal,DialogWindow
+  },
   setup() {
     const storage = useStorage()
     return { storage }
@@ -24,7 +32,7 @@ export default {
   methods: {
     AddDebt(){
       this.storage.persons.map((item)=>item['debt']=Array.apply(null, Array(this.storage.persons.length)).map(() => {
-          return Number(0)
+          return 0
         }))
     },
     AddMeal() {
@@ -56,10 +64,6 @@ export default {
         })
     },
     checkFields() {
-      this.nameError=0;
-      this.priceError=0;
-      this.chooseError=0;
-      this.amountError=0;
       if ( this.storage.meals.length<2)
       {
         this.amountError=1;
@@ -90,6 +94,12 @@ export default {
       this.chooseError==0 &&
       this.amountError==0)
       this.$router.push({path:'/result'})
+    },
+    resetStates(){
+      this.nameError=0;
+      this.priceError=0;
+      this.chooseError=0;
+      this.amountError=0;
     }
   }
 }
@@ -99,81 +109,18 @@ export default {
   {{ AddDebt() }}
   <v-container>
     <v-sheet max-width="300" class="mx-auto sheet">
-      <v-btn @click="AddMeal()" class="mb-7" block rounded="lg" size="x-large" color="light-green"
-        >Добавить позицию</v-btn
-      >
+
+      <action-button name="Добавить позицию" @click="AddMeal()"/>
+
     </v-sheet>
+
     <v-card class="mx-auto overflow-y-auto v-card" max-width="500" max-height="510">
       <div class="people-container" v-for="(meal, idx) in storage.meals" :key="idx">
-        <div class="people">
-          <div class="text-field-container">
-            <v-text-field
-              v-model="this.storage.meals[idx].name"
-              placeholder="Введите название"
-              maxlength="10"
-              max-width="250"
-            ></v-text-field>
-          </div>
-          <div class="text-field-container">
-            <v-text-field
-              v-model="this.storage.meals[idx].price"
-              type="number"
-              min="1"
-              max="99999"
-              maxlength="10"
-              @input="if(Number(storage.meals[idx].price) > 99999) storage.meals[idx].price = '99999';
-                      if(Number(storage.meals[idx].price) <1) storage.meals[idx].price = '';
-                      if(storage.meals[idx].price.length>8) storage.meals[idx].price =storage.meals[idx].price.slice(0,-1) "
-              placeholder="Введите цену"
-              max-width="250"
-            ></v-text-field>
-          </div>
-          <v-btn
-            class="ml-auto"
-            size="small"
-            icon="mdi-delete"
-            color="red"
-            @click="RemoveMeal(idx)"
-          ></v-btn>
-        </div>
+
+        <input-meal :idx="idx" @RemoveMeal="RemoveMeal"></input-meal>
+
         <div class="peopleInteraction">
-          <v-dialog
-          v-model="dialog[idx]"
-            scrollable
-            width="auto"
-            transition="dialog-bottom-transition"
-          >
-            <template v-slot:activator="{props}">
-              <v-btn
-              color="primary"
-              v-bind="props"
-              class="people-list dialog">
-              Платит: {{storage.persons[storage.meals[idx].payer].name}}
-            </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>Выберите плательщика</v-card-title>
-              <v-divider></v-divider>
-              <v-card-text style="height: 300px;">
-                <v-radio-group
-                v-model="storage.meals[idx].payer"
-                column>
-                  <v-radio v-for="(person, index) in storage.persons" 
-                  :key="person.name"
-                  :label="`${person.name}`"
-                  :value=index></v-radio>
-                </v-radio-group>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-btn
-                  color="blue-darken-1"
-                  variant="text"
-                  @click="dialog[idx]=false">
-                Close</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <dialog-window :dialog="dialog" :idx="idx"></dialog-window>
         <div class="people-list">
           <button class="people-item" @click="ClickAll(idx)">Все</button>
           <button
@@ -186,57 +133,27 @@ export default {
             {{ person.name }}
           </button>
         </div>
+
       </div>
+
       </div>
       <div class="people noPeople" v-if="!storage.meals.length">
         <span>Нам нужен список блюд</span>
       </div>
+
     </v-card>
-    <div class="people noPeople" v-if="storage.meals.length">
+
+    <div class="special" v-if="storage.meals.length">
       <span>Промежуточный итог: {{fullprice}}</span>
     </div>
+
     <v-sheet max-width="300" class="mx-auto sheet">
-      <v-btn
-        class="next-button"
-        block
-        rounded="lg"
-        size="x-large"
-        color="light-green"
-        @click="checkFields(),redirect()"
-        >Перейти к результатам</v-btn
-      >
-      <v-alert
-        type="warning"
-        title="Ошибка!"
-        text="Введите хотя бы две позиции!"
-        v-show="amountError==1"
-      >
-        <button @click="nameError=0" class="alert-button">x</button></v-alert
-      >
-      <v-alert
-        type="warning"
-        title="Ошибка!"
-        text="Введите все наименования!"
-        v-show="nameError==1"
-      >
-        <button @click="nameError=0" class="alert-button">x</button></v-alert
-      >
-      <v-alert
-        type="warning"
-        title="Ошибка!"
-        text="Введите все цены правильно!"
-        v-show="priceError == 1"
-      >
-        <button @click="priceError=0" class="alert-button">x</button></v-alert
-      >
-      <v-alert
-        type="warning"
-        title="Ошибка!"
-        text="Правильно отметьте всех людей!"
-        v-show="chooseError"
-      >
-        <button @click="chooseError=0" class="alert-button">x</button>
-      </v-alert>
+      <action-button name="Перейти к результатам" @click="resetStates(),checkFields(),redirect()"/>
+
+      <alert-message v-show="amountError==1" text="Введите как минимум 2 позиции!" @reset="resetStates"/>
+      <alert-message v-show="nameError==1" text="Введите все наименования!" @reset="resetStates"/>
+      <alert-message v-show="priceError == 1" text="Введите все цены правильно!" @reset="resetStates"/>
+      <alert-message v-show="chooseError" text="Правильно отметьте всех людей!" @reset="resetStates"/>
     </v-sheet>
   </v-container>
 </template>
