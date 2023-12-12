@@ -55,5 +55,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.dialog{
+  margin-top: 5px;
+  margin-left: 22px;
+}
 </style>

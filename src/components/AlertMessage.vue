@@ -20,5 +20,12 @@
 </script>
 
 <style lang="scss" scoped>
-
+.alert-button{
+  border: none;
+  background-color: rgb(251, 140, 0)s;
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  font-size: 16px;
+}
 </style>

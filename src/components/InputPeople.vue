@@ -1,6 +1,6 @@
 <template>
   <transition-group name="people-list">
-  <div class="people" v-for="(person, idx) in storage.persons" :key="idx">
+  <div class="people" v-for="(person, idx) in storage.persons" :key="person.id">
     <div class="text-field-container">
       <v-text-field
         v-model="this.storage.persons[idx].name"

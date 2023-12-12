@@ -1,6 +1,7 @@
 <template>
+  <transtion-group name="meal-list">
   <div class="people">
-          <div class="text-field-container">
+          <div class="text-field-container ">
             <v-text-field
               v-model="this.storage.meals[idx].name"
               placeholder="Введите название"
@@ -30,6 +31,7 @@
             @click="RemoveMeal(idx)"
           ></v-btn>
         </div>
+      </transtion-group>
 </template>
 
 <script>
@@ -48,6 +50,15 @@ export default {
 }
 </script>
 
-<style src="@/css/style.css">
+<style lang="scss" scoped>
 
+.meal-list-enter-active,
+.meal-list-leave-active {
+  transition: all 0.3s ease;
+}
+.meal-list-enter-from,
+.meal-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
 </style>

@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     addPerson() {
-      this.storage.persons.push({ name: '', debt: '' })
+      this.storage.persons.push({ name: '', debt: '',id:Date.now() })
     },
     removePerson(idx) {
       this.storage.persons.splice(idx, 1)
@@ -74,4 +74,4 @@ export default {
 }
 </script>
 
-<style src="@/css/style.css" scoped></style>
+<style scoped></style>

@@ -1,3 +1,58 @@
+<template>
+  {{ AddDebt() }}
+  <v-container>
+    <v-sheet max-width="300" class="mx-auto sheet">
+
+      <action-button name="Добавить позицию" @click="AddMeal()"/>
+
+    </v-sheet>
+
+    <v-card class="mx-auto overflow-y-auto v-card" max-width="500" max-height="510">
+      <transition-group name="meal-list">
+      <div class="people-container" v-for="(meal, idx) in storage.meals" :key="meal.id">
+
+        <input-meal :idx="idx" @RemoveMeal="RemoveMeal"></input-meal>
+
+        <div class="peopleInteraction">
+          <dialog-window :dialog="dialog" :idx="idx"></dialog-window>
+        <div class="people-list">
+          <button class="people-item" @click="ClickAll(idx)">Все</button>
+          <button
+            class="people-item"
+            v-for="(person, index) in storage.persons"
+            :key="index"
+            :class="{ clicked: storage.meals[idx].eater[index] === 1}"
+            @click="Clicked(idx, index)"
+          >
+            {{ person.name }}
+          </button>
+        </div>
+
+      </div>
+
+      </div>
+    </transition-group>
+      <div class="people noPeople" v-if="!storage.meals.length">
+        <span>Нам нужен список блюд</span>
+      </div>
+
+    </v-card>
+
+    <div class="special" v-if="storage.meals.length">
+      <span>Промежуточный итог: {{fullprice}}</span>
+    </div>
+
+    <v-sheet max-width="300" class="mx-auto sheet">
+      <action-button name="Перейти к результатам" @click="resetStates(),checkFields(),redirect()"/>
+
+      <alert-message v-show="amountError==1" text="Введите как минимум 2 позиции!" @reset="resetStates"/>
+      <alert-message v-show="nameError==1" text="Введите все наименования!" @reset="resetStates"/>
+      <alert-message v-show="priceError == 1" text="Введите все цены правильно!" @reset="resetStates"/>
+      <alert-message v-show="chooseError" text="Правильно отметьте всех людей!" @reset="resetStates"/>
+    </v-sheet>
+  </v-container>
+</template>
+
 <script>
 
 import { useStorage } from '@/stores/storage'
@@ -42,7 +97,8 @@ export default {
         eater: Array.apply(null, Array(this.storage.persons.length)).map(() => {
           return 0
         }),
-        payer:0
+        payer:0,
+        id:Date.now(),
       })
       this.dialog.push(false);
     },
@@ -105,57 +161,69 @@ export default {
 }
 </script>
 
-<template>
-  {{ AddDebt() }}
-  <v-container>
-    <v-sheet max-width="300" class="mx-auto sheet">
+<style lang="scss" scoped>
 
-      <action-button name="Добавить позицию" @click="AddMeal()"/>
 
-    </v-sheet>
+.meal-list-enter-active,
+.meal-list-leave-active {
+  transition: all 0.3s ease;
+}
+.meal-list-enter-from,
+.meal-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.people-list{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  padding: 5px 0px;
+  max-width: 456px;
+  margin-left: 22px;
+}
+.people-item{
+  border: 2px solid gray;
+  border-radius: 10px;
+  padding: 3px;
+  max-height: 37px;
+  
+}
+.people-item:hover{
+  opacity: 0.75;
+  background-color:rgb(94, 159, 159);
+  transition: .15s;
+}
+.clicked{
+  transition: .15s;
+border: 2px solid greenyellow;
+}
+.people-item:first-child{
+  border-color: black;
+  margin-right: 10px;
+}
+.special{
+  display: flex;
+  padding: 10px 20px;
+  border: 2px solid ghostwhite;
+  border-radius: 10px;
+  background-color: lightblue;
+  color: black; 
+  margin-bottom: 20px;
+  justify-content: center;
+  max-width:500px;
+  max-height:438px;
+  margin: 20px auto;
+}
 
-    <v-card class="mx-auto overflow-y-auto v-card" max-width="500" max-height="510">
-      <div class="people-container" v-for="(meal, idx) in storage.meals" :key="idx">
+.people-container{
+  background-color: lightblue;
+  margin-bottom: 3px;
+  border-radius: 10px;
+}
 
-        <input-meal :idx="idx" @RemoveMeal="RemoveMeal"></input-meal>
-
-        <div class="peopleInteraction">
-          <dialog-window :dialog="dialog" :idx="idx"></dialog-window>
-        <div class="people-list">
-          <button class="people-item" @click="ClickAll(idx)">Все</button>
-          <button
-            class="people-item"
-            v-for="(person, index) in storage.persons"
-            :key="index"
-            :class="{ clicked: storage.meals[idx].eater[index] === 1}"
-            @click="Clicked(idx, index)"
-          >
-            {{ person.name }}
-          </button>
-        </div>
-
-      </div>
-
-      </div>
-      <div class="people noPeople" v-if="!storage.meals.length">
-        <span>Нам нужен список блюд</span>
-      </div>
-
-    </v-card>
-
-    <div class="special" v-if="storage.meals.length">
-      <span>Промежуточный итог: {{fullprice}}</span>
-    </div>
-
-    <v-sheet max-width="300" class="mx-auto sheet">
-      <action-button name="Перейти к результатам" @click="resetStates(),checkFields(),redirect()"/>
-
-      <alert-message v-show="amountError==1" text="Введите как минимум 2 позиции!" @reset="resetStates"/>
-      <alert-message v-show="nameError==1" text="Введите все наименования!" @reset="resetStates"/>
-      <alert-message v-show="priceError == 1" text="Введите все цены правильно!" @reset="resetStates"/>
-      <alert-message v-show="chooseError" text="Правильно отметьте всех людей!" @reset="resetStates"/>
-    </v-sheet>
-  </v-container>
-</template>
-
-<style scoped></style>
+.people-container:nth-last-child(-n+2){
+  margin-bottom: 0 !important;
+  }
+</style>

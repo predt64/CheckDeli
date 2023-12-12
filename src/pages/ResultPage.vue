@@ -1,3 +1,18 @@
+<template>
+  {{ calculate }}
+  <div class="people noPeople result">
+  <span>Результаты следующие:</span>
+    </div>
+<v-card class="mx-auto overflow-y-auto v-card resultcard" max-width="500" max-height="495">
+  <div class="debt" v-for="(person, idx) in storage.persons" :key="idx">
+    <p>пользователь <b>{{ person.name }}</b> должен:</p>
+    <p v-if="checkDebt(storage.persons[idx].debt)">Да никому он не должен, живет как хочет</p>
+    <p v-else v-for="(debt,index) in storage.persons[idx].debt" 
+    :key="index" v-show="debt"> {{storage.persons[index].name}} : <b>{{ debt }}</b></p>
+  </div>
+</v-card>
+</template>
+
 <script>
 import { useStorage } from '@/stores/storage'
 
@@ -8,7 +23,6 @@ export default {
   },
   data() {
     return {
-      items:this.storage.persons
     }
   },
   methods:{
@@ -42,7 +56,8 @@ export default {
 computed:{
   calculate(){
       this.calculatePartialPrice();
-      this.storage.meals.map((meal,idx)=>meal.eater.map((person,index)=>person==1 && index!=this.storage.meals[idx].payer?
+      this.storage.meals.map((meal,idx)=>meal.eater.map((person,index)=>
+      person==1 && index!=this.storage.meals[idx].payer?
       this.storage.persons[index].debt[this.storage.meals[idx].payer]
       +=this.storage.meals[idx].partialPrice
       :this.storage.persons[index].debt[this.storage.meals[idx].payer]+=0));
@@ -52,19 +67,13 @@ computed:{
 }
 }
 </script>
-<template>
-  {{ calculate }}
-  <div class="people noPeople result">
-  <span>Результаты следующие:</span>
-    </div>
-<v-card class="mx-auto overflow-y-auto v-card resultcard" max-width="500" max-height="495">
-  <div class="debt" v-for="(person, idx) in storage.persons" :key="idx">
-    <p>пользователь <b>{{ person.name }}</b> должен:</p>
-    <p v-if="checkDebt(storage.persons[idx].debt)">Да никому он не должен, живет как хочет</p>
-    <p v-else v-for="(debt,index) in storage.persons[idx].debt" 
-    :key="index" v-show="debt"> {{storage.persons[index].name}} : <b>{{ debt }}</b></p>
-  </div>
-</v-card>
-</template>
 
-<style src="@/css/style.css" scoped></style>
+
+<style lang="scss" scoped>
+.result{
+  margin-top: 20px;
+  background-color: coral;
+}
+.resultcard{
+  margin-top: 20px;
+}</style>
