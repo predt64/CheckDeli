@@ -32,6 +32,7 @@ margin-bottom: 0 !important;
 .v-card{
   background-color: #588157 !important;
   margin: 20px 0px;
+  box-shadow: none !important;
 }
 .noPeople{
   @extend .people;

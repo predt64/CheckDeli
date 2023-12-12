@@ -7,7 +7,7 @@
 
     </v-sheet>
 
-    <v-card class="mx-auto overflow-y-auto v-card" max-width="500" max-height="510">
+    <v-card class="mx-auto overflow-y-auto v-card" max-width="500" max-height="513">
       <transition-group name="meal-list">
       <div class="people-container" v-for="(meal, idx) in storage.meals" :key="meal.id">
 

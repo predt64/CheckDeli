@@ -43,6 +43,8 @@ body {
 .v-card {
   background-color: #588157 !important;
   margin: 20px 0px;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
 }
 
 .noPeople {
