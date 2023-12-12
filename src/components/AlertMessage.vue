@@ -1,12 +1,10 @@
-<template>
+<template>      <!--Сообщение об ошибке-->
   <v-alert
           type="warning"
           title="Ошибка!"
-          text="Введите еще хотя бы 2-х пользователей!"
-          v-show="0 == state"
         >
-        <button @click="reset" class="alert-button"
-        >x</button></v-alert>
+        <button @click="reset" class="alert-button"   
+        >x</button></v-alert>               <!--При клике вызываем функцию reset, которую эмитим в родительский компонент, чтобы убрать сообщение об ошибке-->
 </template>
 
 <script>

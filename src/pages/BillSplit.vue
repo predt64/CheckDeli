@@ -1,9 +1,9 @@
 <template>
-  {{ AddDebt() }}
+  {{ AddDebt() }}  <!--Вызов функции, добавляющий к каждому пользователю поле debt с массивом нулей в количестве введенных пользователей, туда будет записываться долг пользователя другим людям -->
   <v-container>
     <v-sheet max-width="300" class="mx-auto sheet">
 
-      <action-button name="Добавить позицию" @click="AddMeal()"/>
+      <action-button name="Добавить позицию" @click="AddMeal()"/>  <!--Кнопка добавления новой позции-->
 
     </v-sheet>
 
@@ -11,21 +11,21 @@
       <transition-group name="meal-list">
       <div class="people-container" v-for="(meal, idx) in storage.meals" :key="meal.id">
 
-        <input-meal :idx="idx" @RemoveMeal="RemoveMeal"></input-meal>
+        <input-meal :idx="idx" @RemoveMeal="RemoveMeal"></input-meal> <!--Компонент ввода названия и цены нового блюда, а так же его удаление-->
 
         <div class="peopleInteraction">
-          <dialog-window :dialog="dialog" :idx="idx"></dialog-window>
-        <div class="people-list">
-          <button class="people-item" @click="ClickAll(idx)">Все</button>
+          <dialog-window :dialog="dialog" :idx="idx"></dialog-window> <!--Компонент диалоговое окно с выбором плательщика-->
+        <div class="people-list">                                      <!--Конпки выбора людей, употреблявших то или иное блюдо-->
+          <button class="people-item" @click="ClickAll(idx)">Все</button>  <!--клик по всем людям-->
           <button
             class="people-item"
             v-for="(person, index) in storage.persons"
             :key="index"
             :class="{ clicked: storage.meals[idx].eater[index] === 1}"
             @click="Clicked(idx, index)"
-          >
+          >                                  
             {{ person.name }}
-          </button>
+          </button>                                <!--отрисовка кнопок с именами введенных людей-->
         </div>
 
       </div>
@@ -33,19 +33,19 @@
       </div>
     </transition-group>
       <div class="people noPeople" v-if="!storage.meals.length">
-        <span>Нам нужен список блюд</span>
+        <span>Нам нужен список блюд</span>  <!--Сообщение при отсутствии введенных позиций-->
       </div>
 
     </v-card>
 
     <div class="special" v-if="storage.meals.length">
-      <span>Промежуточный итог: {{fullprice}}</span>
+      <span>Промежуточный итог: {{fullprice}}</span>               <!--вызов функции fullprice для вывода суммы цен введенных позиций-->
     </div>
 
-    <v-sheet max-width="300" class="mx-auto sheet">
-      <action-button name="Перейти к результатам" @click="resetStates(),checkFields(),redirect()"/>
+    <v-sheet max-width="300" class="mx-auto sheet"> 
+      <action-button name="Перейти к результатам" @click="resetStates(),checkFields(),redirect()"/>   <!--Кнопка перехода к результатам-->
 
-      <alert-message v-show="amountError==1" text="Введите как минимум 2 позиции!" @reset="resetStates"/>
+      <alert-message v-show="amountError==1" text="Введите как минимум 2 позиции!" @reset="resetStates"/>    <!--Сообщения об ошибках-->
       <alert-message v-show="nameError==1" text="Введите все наименования!" @reset="resetStates"/>
       <alert-message v-show="priceError == 1" text="Введите все цены правильно!" @reset="resetStates"/>
       <alert-message v-show="chooseError" text="Правильно отметьте всех людей!" @reset="resetStates"/>
@@ -55,8 +55,8 @@
 
 <script>
 
-import { useStorage } from '@/stores/storage'
-import ActionButton from '../components/ActionButton.vue'
+import { useStorage } from '@/stores/storage'                           //импорт хранилища
+import ActionButton from '../components/ActionButton.vue'               //импорт компонентов
 import AlertMessage from '../components/AlertMEssage.vue'
 import InputMeal from '../components/InputMeal.vue'
 import DialogWindow from '../components/DialogWindow.vue'
@@ -71,24 +71,23 @@ export default {
   },
   data() {
     return {
-      nameError: 0,
+      nameError: 0,                 //вспомогательные переменные для проверки корректности введенных данных
       priceError: 0,
       chooseError: 0,
       amountError: 0,
-      dialog:[],
+      dialog:[],                    //вспомогательный массив для корректности отображения диалоговых окон с выбором плательщиков
   }
 },
   computed:{
-    
     fullprice : function(){
-      return this.storage.meals.reduce((acc,curr)=>acc+Number(curr.price),0)
+      return this.storage.meals.reduce((acc,curr)=>acc+Number(curr.price),0)          //подсчет цены всех введенных блюд
     }
 },
   methods: {
     AddDebt(){
       this.storage.persons.map((item)=>item['debt']=Array.apply(null, Array(this.storage.persons.length)).map(() => {
           return 0
-        }))
+        }))                            //добавление поля debt с массивом нулей = количеству пользователей, вызывается во 2 строчке
     },
     AddMeal() {
       this.storage.meals.push({
@@ -98,45 +97,45 @@ export default {
           return 0
         }),
         payer:0,
-        id:Date.now(),
+        id:Date.now(),                      //добавление нового блюда в хранилище
       })
-      this.dialog.push(false);
+      this.dialog.push(false);               //добавление нового значения в dialog, нужно для корректной работы окна
     },
     RemoveMeal(idx) {
-      this.storage.meals.splice(idx, 1)
+      this.storage.meals.splice(idx, 1) //удаление блюда
     },
     Clicked(idx, index) {
       if (this.storage.meals[idx].eater[index] === 1) this.storage.meals[idx].eater[index] = 0
-      else this.storage.meals[idx].eater[index] = 1
+      else this.storage.meals[idx].eater[index] = 1             //проверка на то, была ли кликнута кнопка с соответствующим index пользователем, если нет, то пользователь добавляется в массив eaters в storage, что означает его причасность к употреблению блюда и он будет включен в его оплату                     
     },
     ClickAll(idx) {
       if (this.storage.meals[idx].eater.filter((p) => p == 0).length == 0)
         this.storage.meals[idx].eater = this.storage.meals[idx].eater.map(() => {
-          return 0
+          return 0                                              //клик на всех пользователей- либо добавление всех в eaters, либо их совместное удаление
         })
       else
         this.storage.meals[idx].eater = this.storage.meals[idx].eater.map(() => {
           return 1
         })
     },
-    checkFields() {
+    checkFields() {       //функция проверки правильности введеных полей, вызывается при желании пользователя перейти на страницу результатов
       if ( this.storage.meals.length<2)
       {
-        this.amountError=1;
+        this.amountError=1;                           // проверяем, введено ли хотя бы 2 позиции
         return -1
       }
       if ( this.storage.meals.filter((p) => p.name).length != this.storage.meals.length)
       {
-        this.nameError=1;
+        this.nameError=1;                             // проверяем, везде ли введено название блюда
         return -1
       }
       else if(this.fullprice==0 || this.storage.meals.filter((p) => p.price).length != this.storage.meals.length)
       {
-        this.priceError=1;
+        this.priceError=1;                            // проверяем, везде ли проставлена цена
         return -1
       }
       else if(this.storage.meals.filter((item)=>item.eater.filter((curr) => curr==1).length).length
-              != this.storage.meals.length) // проверяем, есть ли хотя бы 1 отмеченный пользователь в каждом блюде
+              != this.storage.meals.length)            // проверяем, есть ли хотя бы 1 отмеченный пользователь в каждом блюде
       {
         this.chooseError=1;
         return -1
@@ -149,13 +148,13 @@ export default {
       this.priceError==0 &&
       this.chooseError==0 &&
       this.amountError==0)
-      this.$router.push({path:'/result'})
+      this.$router.push({path:'/result'})                //переход на странцу результатов если все впорядке
     },
     resetStates(){
       this.nameError=0;
       this.priceError=0;
       this.chooseError=0;
-      this.amountError=0;
+      this.amountError=0;                               //обнуление переменных для удаления сообщения об ошибке
     }
   }
 }

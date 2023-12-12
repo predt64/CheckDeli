@@ -1,5 +1,4 @@
-<template>
-  <transtion-group name="meal-list">
+<template> <!--компонент ввода навзвания и цены позиции а так же ее удалиние, схож по архитектуре с аналогичным компонентом InputPeople-->
   <div class="people">
           <div class="text-field-container ">
             <v-text-field
@@ -16,12 +15,12 @@
               min="1"
               max="99999"
               maxlength="10"
+              placeholder="Введите цену"
+              max-width="250"
               @input="if(Number(storage.meals[idx].price) > 99999) storage.meals[idx].price = '99999';
                       if(Number(storage.meals[idx].price) <1) storage.meals[idx].price = '';
                       if(storage.meals[idx].price.length>8) storage.meals[idx].price =storage.meals[idx].price.slice(0,-1)"
-              placeholder="Введите цену"
-              max-width="250"
-            > </v-text-field>
+            > </v-text-field>      <!--внутри текст-филд проверки на длину введенной цены, ее максимальное и минимальное значение-->
           </div>
           <v-btn
             class="ml-auto"
@@ -31,7 +30,6 @@
             @click="RemoveMeal(idx)"
           ></v-btn>
         </div>
-      </transtion-group>
 </template>
 
 <script>
@@ -50,15 +48,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-.meal-list-enter-active,
-.meal-list-leave-active {
-  transition: all 0.3s ease;
-}
-.meal-list-enter-from,
-.meal-list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
+<style>
 </style>

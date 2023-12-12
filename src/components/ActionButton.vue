@@ -1,4 +1,4 @@
-<template>
+<template>            <!--кнопка, пропсом принимаем желаемый текст внутри блока-->
     <v-sheet max-width="300" class="mx-auto sheet">
         <v-btn
           class="mb-1"
