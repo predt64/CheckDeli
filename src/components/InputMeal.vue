@@ -2,6 +2,7 @@
   <div class="people">
           <div class="text-field-container ">
             <v-text-field
+              class="text-field"
               v-model="this.storage.meals[idx].name"
               placeholder="Введите название"
               maxlength="10"
@@ -10,6 +11,7 @@
           </div>
           <div class="text-field-container">
             <v-text-field
+              class="text-field"
               v-model="this.storage.meals[idx].price"
               type="number"
               min="1"
@@ -26,7 +28,7 @@
             class="ml-auto"
             size="small"
             icon="mdi-delete"
-            color="red"
+            color="#E63946"
             @click="RemoveMeal(idx)"
           ></v-btn>
         </div>

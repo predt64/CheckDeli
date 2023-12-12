@@ -1,20 +1,20 @@
 body{
-  background-color: rgb(109, 185, 185);
+  background-color: #588157;
   font-family: Ubuntu;
   font-weight: 500;
   font-size: large;
 }
 .sheet{
-  background-color: rgb(109, 185, 185) !important;
+  background-color: #588157 !important;
 }
 .people{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  border: 2px solid ghostwhite;
+  border: 2px solid #DAD7CD;
   border-radius: 10px;
-  background-color: lightblue;
+  background-color: #3A5A40;
   color: black; 
   min-width: 500px;
   column-gap: 10px;
@@ -23,13 +23,14 @@ body{
 .debt{
   @extend .people;
   display: block;
+  color: #DAD7CD;
 }
 .people:nth-last-child(-n+2){
 margin-bottom: 0 !important;
 }
 
 .v-card{
-  background-color: rgb(109, 185, 185) !important;
+  background-color: #588157 !important;
   margin: 20px 0px;
 }
 .noPeople{
@@ -49,4 +50,7 @@ margin-bottom: 0 !important;
 
 .text-field-container{
 width: 300px;
+}
+.text-field{
+  color: white;
 }

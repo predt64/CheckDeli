@@ -1,13 +1,13 @@
-<template>    
+<template>    <!--Компонент диалогове окно с выбором плательщика-->
   <v-dialog
-          v-model="myDialog[idx]"
+          v-model="myDialog[idx]"            
             scrollable
             width="auto"
             transition="dialog-bottom-transition"
-          >
-            <template v-slot:activator="{props}">
+          >      <!--двустороннее связывание с локальной переменной myDialog равной переданному пропсом dialog, т.к. при закрытии и открытии dialog должен изменяться, а из дочернего компонента родительские переменные мы изменять не можем -->
+            <template v-slot:activator="{props}"> <!--последующий код в основном взят с vueitfy и модифицирован под нужды автора-->
               <v-btn
-              color="primary"
+              color="#A3B18A"
               v-bind="props"
               class="people-list dialog">
               Платит: {{storage.persons[storage.meals[idx].payer].name}}
@@ -29,7 +29,7 @@
               <v-divider></v-divider>
               <v-card-actions>
                 <v-btn
-                  color="blue-darken-1"
+                  color="#A3B18A"
                   variant="text"
                   @click="myDialog[idx]=false">
                 Close</v-btn>

@@ -88,7 +88,7 @@ computed:{
 <style lang="scss" scoped>
 .result{
   margin-top: 20px;
-  background-color: coral;
+  background-color: #A3B18A;
 }
 .resultcard{
   margin-top: 20px;

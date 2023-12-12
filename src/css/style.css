@@ -1,12 +1,12 @@
 body {
-  background-color: rgb(109, 185, 185);
+  background-color: #588157;
   font-family: Ubuntu;
   font-weight: 500;
   font-size: large;
 }
 
 .sheet {
-  background-color: rgb(109, 185, 185) !important;
+  background-color: #588157 !important;
 }
 
 .people, .noPeople, .debt {
@@ -20,9 +20,9 @@ body {
       -ms-flex-align: center;
           align-items: center;
   padding: 10px 20px;
-  border: 2px solid ghostwhite;
+  border: 2px solid #DAD7CD;
   border-radius: 10px;
-  background-color: lightblue;
+  background-color: #3A5A40;
   color: black;
   min-width: 500px;
   -webkit-column-gap: 10px;
@@ -33,6 +33,7 @@ body {
 
 .debt {
   display: block;
+  color: #DAD7CD;
 }
 
 .people:nth-last-child(-n+2), .noPeople:nth-last-child(-n+2), .debt:nth-last-child(-n+2) {
@@ -40,7 +41,7 @@ body {
 }
 
 .v-card {
-  background-color: rgb(109, 185, 185) !important;
+  background-color: #588157 !important;
   margin: 20px 0px;
 }
 
@@ -63,4 +64,8 @@ body {
 
 .text-field-container {
   width: 300px;
+}
+
+.text-field {
+  color: white;
 }

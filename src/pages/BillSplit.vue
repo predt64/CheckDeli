@@ -181,6 +181,7 @@ export default {
   padding: 5px 0px;
   max-width: 456px;
   margin-left: 22px;
+  color: #DAD7CD;
 }
 .people-item{
   border: 2px solid gray;
@@ -191,33 +192,34 @@ export default {
 }
 .people-item:hover{
   opacity: 0.75;
-  background-color:rgb(94, 159, 159);
+  background-color:#6c765a;
   transition: .15s;
 }
 .clicked{
   transition: .15s;
-border: 2px solid greenyellow;
+border: 2px solid rgb(139, 191, 60);
 }
 .people-item:first-child{
-  border-color: black;
+  border-color: rgb(18, 43, 13);
   margin-right: 10px;
 }
 .special{
   display: flex;
   padding: 10px 20px;
-  border: 2px solid ghostwhite;
+  border: 2px solid #DAD7CD;
   border-radius: 10px;
-  background-color: lightblue;
+  background-color: #3A5A40;
   color: black; 
   margin-bottom: 20px;
   justify-content: center;
   max-width:500px;
   max-height:438px;
   margin: 20px auto;
+  color: #DAD7CD;
 }
 
 .people-container{
-  background-color: lightblue;
+  background-color: #3A5A40;
   margin-bottom: 3px;
   border-radius: 10px;
 }

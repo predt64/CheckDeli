@@ -5,7 +5,7 @@
           block
           rounded="lg"
           size="x-large"
-          color="light-green">
+          color="#DAD7CD">
           {{ name }}
         </v-btn>
       </v-sheet>
@@ -16,5 +16,4 @@ defineProps(['name'])
 </script>
 
 <style lang="scss" scoped>
-
 </style>
