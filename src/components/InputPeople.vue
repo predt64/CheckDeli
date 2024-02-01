@@ -44,9 +44,7 @@ export default {
   opacity: 0;
   transform: translateX(30px);
 }
-.text-field{
-  color: white;
-}
+
 .delete__button{
   color: rgb(255, 54, 54);
   background-color: #344E41;

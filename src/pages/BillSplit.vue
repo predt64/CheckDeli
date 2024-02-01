@@ -57,7 +57,7 @@
 
 import { useStorage } from '@/stores/storage'                           //импорт хранилища
 import ActionButton from '../components/ActionButton.vue'               //импорт компонентов
-import AlertMessage from '../components/AlertMEssage.vue'
+import AlertMessage from '../components/AlertMessage.vue'
 import InputMeal from '../components/InputMeal.vue'
 import DialogWindow from '../components/DialogWindow.vue'
 

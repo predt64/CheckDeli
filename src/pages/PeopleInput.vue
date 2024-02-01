@@ -32,7 +32,7 @@
 
 <script>
 import ActionButton from '@/components/ActionButton.vue'          //импорт компонентов
-import AlertMessage from '../components/AlertMEssage.vue'
+import AlertMessage from '../components/AlertMessage.vue'
 import InputPeople from '../components/InputPeople.vue'
 import { useStorage } from '@/stores/storage'                     //импорт хранилища
 
