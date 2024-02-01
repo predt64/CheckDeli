@@ -1,8 +1,8 @@
 // import Vue from 'vue';
 import{ createRouter, createWebHashHistory } from 'vue-router';
-import split from './pages/BillSplit.vue';
-import PeopleInput from './pages/PeopleInput.vue';
-import result from './pages/ResultPage.vue';
+import split from '@/pages/BillSplit.vue';
+import PeopleInput from '@/pages/PeopleInput.vue';
+import result from '@/pages/ResultPage.vue';
 
 export default createRouter({
   history: createWebHashHistory(),
