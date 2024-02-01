@@ -11,8 +11,15 @@
       </v-sheet>
 </template>
 
-<script setup>
-defineProps(['name'])
+<script>
+export default{
+  props:{
+    name:{
+      type:String,
+      required:true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

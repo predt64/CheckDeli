@@ -26,7 +26,7 @@
                   :value=index></v-radio>
                 </v-radio-group>
               </v-card-text>
-              <v-divider></v-divider>
+              <v-divider/>
               <v-card-actions>
                 <v-btn
                   color="#A3B18A"
@@ -41,7 +41,16 @@
 <script>
   import { useStorage } from '@/stores/storage'
 export default {
-  props:['dialog', 'idx'],
+  props:{
+    dialog:{
+      type:Array,
+      required:true
+    },
+    idx:{
+      type:Number,
+      required:true,
+    }
+  },
   setup() {
     const storage = useStorage()
     return { storage }
