@@ -15,12 +15,9 @@
         class="text-field"
         v-model="this.storage.meals[idx].price"
         type="number"
-        min="1"
-        max="99999"
-        maxlength="10"
         placeholder="Введите цену"
         max-width="250"
-        @input="checkLength(idx)"
+        @input="checkLength"
       >
       </v-text-field>
       <!--внутри текст-филд проверки на длину введенной цены, ее максимальное и минимальное значение-->
@@ -38,20 +35,26 @@
 <script>
 import { useStorage } from '@/stores/storage'
 export default {
-  props: ['idx'],
+  emits:['removeMeal'],
+  props:{
+    idx:{
+      type:Number,
+      requred:true,
+    }
+  },
   setup() {
     const storage = useStorage()
     return { storage }
   },
   methods: {
-    removeMeal(idx) {
-      this.$emit('RemoveMeal', idx)
+    removeMeal() {
+      this.$emit('removeMeal')
     },
-    checkLength(idx) {
-      if (Number(this.storage.meals[idx].price) > 99999) this.storage.meals[idx].price = '99999'
-      if (Number(this.storage.meals[idx].price) < 1) this.storage.meals[idx].price = ''
-      if (this.storage.meals[idx].price.length > 8)
-        this.storage.meals[idx].price = this.storage.meals[idx].price.slice(0, -1)
+    checkLength(){
+      const currentPrice=Number(this.storage.meals[this.idx].price)
+
+      if (currentPrice > 99999) this.storage.meals[this.idx].price = '99999'
+      if (currentPrice < 1) this.storage.meals[this.idx].price = ''
     }
   }
 }

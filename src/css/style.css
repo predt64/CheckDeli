@@ -1,0 +1,73 @@
+body {
+  background-color: #588157;
+  font-family: Ubuntu;
+  font-weight: 500;
+  font-size: large;
+}
+
+.sheet {
+  background-color: #588157 !important;
+}
+
+.people, .noPeople, .debt {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 10px 20px;
+  border: 2px solid #DAD7CD;
+  border-radius: 10px;
+  background-color: #3A5A40;
+  color: black;
+  min-width: 500px;
+  -webkit-column-gap: 10px;
+     -moz-column-gap: 10px;
+          column-gap: 10px;
+  margin-bottom: 3px;
+}
+
+.debt {
+  display: block;
+  color: #DAD7CD;
+}
+
+.people:nth-last-child(-n+2), .noPeople:nth-last-child(-n+2), .debt:nth-last-child(-n+2) {
+  margin-bottom: 0 !important;
+}
+
+.v-card {
+  background-color: #588157 !important;
+  margin: 20px 0px;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+.noPeople {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  max-width: 500px;
+  max-height: 438px;
+  margin: 0 auto;
+}
+
+.next-button {
+  margin-top: 20px;
+}
+
+.v-input__details {
+  display: none !important;
+}
+
+.text-field-container {
+  width: 300px;
+}
+
+.text-field {
+  color: white;
+}

@@ -1,15 +1,12 @@
 // import Vue from 'vue';
 import{ createRouter, createWebHashHistory } from 'vue-router';
-import split from '@/pages/BillSplit.vue';
-import PeopleInput from '@/pages/PeopleInput.vue';
-import result from '@/pages/ResultPage.vue';
 
 export default createRouter({
   history: createWebHashHistory(),
   routes:[
-    {path:'/people',component: PeopleInput, alias:"/"},
-    {path:'/split',component: split},
-    {path:'/result',component: result},
+    {path:'/people',component:()=>import('@/pages/PeopleInput.vue'), alias:"/"},
+    {path:'/split',component:()=>import('@/pages/BillSplit.vue')},
+    {path:'/result',component:()=>import('@/pages/ResultPage.vue')},
   ]
 })
 

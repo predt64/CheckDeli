@@ -15,7 +15,7 @@
             </template>
             <v-card>
               <v-card-title>Выберите плательщика</v-card-title>
-              <v-divider></v-divider>
+              <v-divider/>
               <v-card-text style="height: 300px;">
                 <v-radio-group
                 v-model="storage.meals[idx].payer"

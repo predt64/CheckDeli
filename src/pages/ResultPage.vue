@@ -10,12 +10,11 @@
       </p>
       <p v-if="checkDebt(storage.persons[idx].debt)">Да никому он не должен, живет как хочет</p>
       <!--вызов функции проверки наличия долгов, если их нет, то показ соответствующего сообщения-->
-      <p v-else v-for="(debt, index) in storage.persons[idx].debt" :key="person.id-100" v-show="debt">
+      <p v-else v-for="(debt, index) in storage.persons[idx].debt" :key="storage.meals[idx].id-person.id" v-show="debt">
         {{ storage.persons[index].name }} : <b>{{ debt }}</b>
       </p>
       <!--отображение долга человека другим людям, если он кому то ничего не должен, то это отображаться не будет-->
     </div>
-    {{counter}}
   </v-card>
 </template>
 
@@ -44,25 +43,27 @@ export default {
     },
     //проверка на наличие взаимных долгов между людьми и их последующее вычетание друг из друга
     checkSame() {
-      for (let i = 0; i < this.storage.persons.length; i++) {
-        for (let j = i; j < this.storage.persons[i].debt.length; j++) {
+      let personsArray=this.storage.persons
+
+      personsArray.forEach((valueFirst,i)=>{
+        valueFirst.debt.forEach((valueSecond,j) =>{
           if (
             i != j &&
-            this.storage.persons[i].debt[j] > 0 &&
-            this.storage.persons[j].debt[i] > 0
+            valueFirst.debt[j] > 0 &&
+            personsArray[j].debt[i] > 0
           ) {
             //проверка, у кого долг больше, наверное, можно было бы сделать как ниудь умнее и лаконичнее через модуль разницы или через функцию max(),
             //но это вроде самое понятное решение и, вероятно, не самое медленное, так что его было решено оставить
-            if (this.storage.persons[i].debt[j] > this.storage.persons[j].debt[i]) {
-              this.storage.persons[i].debt[j] -= this.storage.persons[j].debt[i]
+            if (personsArray[i].debt[j] > personsArray[j].debt[i]) {
+              this.storage.persons[i].debt[j] -= personsArray[j].debt[i]
               this.storage.persons[j].debt[i] = 0
             } else {
-              this.storage.persons[j].debt[i] -= this.storage.persons[i].debt[j]
+              this.storage.persons[j].debt[i] -= valueFirst.debt[j]
               this.storage.persons[i].debt[j] = 0
             }
           }
-        }
-      }
+        })
+      })
     },
     // проверка наличия долгов у пользователя, нужна для отображения сообщения при их отсутствии
     checkDebt(debt) {
@@ -84,7 +85,7 @@ export default {
             : (this.storage.persons[index].debt[this.storage.meals[idx].payer] += 0)
         )
       )
-      //проверка на наличие взаимных долгов и их редуцирование
+      //проверка на наличие взаимных долгов и их удаление
       this.checkSame()
     }
   },

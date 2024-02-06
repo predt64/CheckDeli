@@ -22,6 +22,7 @@
 <script>
 import { useStorage } from '@/stores/storage'
 export default {
+  emits:['removePerson'],
   setup() {
     const storage = useStorage()
     return { storage }

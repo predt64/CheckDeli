@@ -2,29 +2,28 @@
   <!--Вызов функции, добавляющий к каждому пользователю поле debt с массивом нулей в количестве введенных пользователей, туда будет записываться долг пользователя другим людям -->
   <v-container>
     <v-sheet max-width="300" class="mx-auto sheet">
-      <action-button name="Добавить позицию" @click="AddMeal()" />
+      <action-button name="Добавить позицию" @click="addMeal()" />
       <!--Кнопка добавления новой позции-->
     </v-sheet>
 
     <v-card class="mx-auto overflow-y-auto v-card" max-width="500" max-height="513">
       <transition-group name="meal-list">
         <div class="people-container" v-for="(meal, idx) in storage.meals" :key="meal.id">
-          <input-meal :idx="idx" @RemoveMeal="RemoveMeal"></input-meal>
+          <input-meal :idx="idx" @removeMeal="removeMeal(idx)"></input-meal>
           <!--Компонент ввода названия и цены нового блюда, а так же его удаление-->
-
           <div class="peopleInteraction">
             <dialog-window :dialog="dialog" :idx="idx"></dialog-window>
             <!--Компонент диалоговое окно с выбором плательщика-->
             <div class="people-list">
               <!--Конпки выбора людей, употреблявших то или иное блюдо-->
-              <button class="people-item" @click="ClickAll(idx)">Все</button>
+              <button class="people-item" @click="clickAll(idx)">Все</button>
               <!--клик по всем людям-->
               <button
                 class="people-item"
                 v-for="(person, index) in storage.persons"
                 :key="person.id"
                 :class="{ clicked: storage.meals[idx].eater[index] === 1 }"
-                @click="Clicked(idx, index)"
+                @click="clicked(idx, index)"
               >
                 {{ person.name }}
               </button>
@@ -47,7 +46,7 @@
     <v-sheet max-width="300" class="mx-auto sheet">
       <action-button
         name="Перейти к результатам"
-        @click="resetStates(), checkFields(), redirect()"
+        @click="onNextButtonClick"
       />
       <!--Кнопка перехода к результатам-->
 
@@ -81,10 +80,24 @@ export default {
   },
   data() {
     return {
-      nameError: 0, //вспомогательные переменные для проверки корректности введенных данных
-      priceError: 0,
-      chooseError: 0,
-      amountError: 0,
+      errorList:{
+        nameError:{
+          status:0,
+          text:"Введите все наименования!",
+        },
+        priceError:{
+          status:0,
+          text:"Введите все цены правильно!",
+        },
+        chooseError:{
+          status:0,
+          text:"Правильно отметьте всех людей!",
+        },
+        amountError:{
+          status:0,
+          text:"Введите как минимум 2 позиции!",
+        }
+      },
       dialog: [] //вспомогательный массив для корректности отображения диалоговых окон с выбором плательщиков
     }
   },
@@ -93,11 +106,11 @@ export default {
       return this.storage.meals.reduce((acc, curr) => acc + Number(curr.price), 0) //подсчет цены всех введенных блюд
     },
     alertMessageText() {
-      if (this.amountError == 1) return "Введите как минимум 2 позиции!"
-      if (this.nameError == 1) return "Введите все наименования!"
-      if (this.priceError == 1) return "Введите все цены правильно!"
-      if (this.chooseError == 1) return "Правильно отметьте всех людей!"
-      else return 0
+      for(const error in this.errorList){
+        if(this.errorList[error].status==1)
+        return  this.errorList[error].text
+      }
+      return 0
     },
     isAlertMessageShown() {
       if (this.alertMessageText == 0) return 0
@@ -105,85 +118,80 @@ export default {
     }
   },
   methods: {
-    AddDebt() {
-      this.storage.persons.map(
-        (item) =>
-          (item['debt'] = Array.apply(null, Array(this.storage.persons.length)).map(() => {
-            return 0
-          }))
+    onNextButtonClick() {
+      this.resetStates(), this.checkFields(), this.redirect()
+    },
+    addDebt() {
+      this.storage.persons.forEach((item)=>{
+        item['debt']= new Array(this.storage.persons.length).fill(0)
+        }
       ) //добавление поля debt с массивом нулей = количеству пользователей, вызывается во 2 строчке
     },
-    AddMeal() {
+    addMeal() {
       this.storage.meals.push({
         name: '',
         price: '',
-        eater: Array.apply(null, Array(this.storage.persons.length)).map(() => {
-          return 0
-        }),
+        eater: new Array(this.storage.persons.length).fill(0),
         payer: 0,
         id: Date.now() //добавление нового блюда в хранилище
       })
       this.dialog.push(false) //добавление нового значения в dialog, нужно для корректной работы окна
     },
-    RemoveMeal(idx) {
+    removeMeal(idx) {
       this.storage.meals.splice(idx, 1) //удаление блюда
     },
-    Clicked(idx, index) {
+    clicked(idx, index) {
       if (this.storage.meals[idx].eater[index] === 1) this.storage.meals[idx].eater[index] = 0
       else this.storage.meals[idx].eater[index] = 1 //проверка на то, была ли кликнута кнопка с соответствующим index пользователем, если нет, то пользователь добавляется в массив eaters в storage, что означает его причасность к употреблению блюда и он будет включен в его оплату
     },
-    ClickAll(idx) {
-      if (this.storage.meals[idx].eater.filter((p) => p == 0).length == 0)
+    clickAll(idx) {
+      if (this.storage.meals[idx].eater.some((eater)=>eater==0))
         this.storage.meals[idx].eater = this.storage.meals[idx].eater.map(() => {
-          return 0 //клик на всех пользователей- либо добавление всех в eaters, либо их совместное удаление
+          return 1 //клик на всех пользователей- либо добавление всех в eaters, либо их совместное удаление
         })
       else
         this.storage.meals[idx].eater = this.storage.meals[idx].eater.map(() => {
-          return 1
+          return 0
         })
     },
     checkFields() {
       //функция проверки правильности введеных полей, вызывается при желании пользователя перейти на страницу результатов
       if (this.storage.meals.length < 2) {
-        this.amountError = 1 // проверяем, введено ли хотя бы 2 позиции
+        this.errorList.amountError.status = 1 // проверяем, введено ли хотя бы 2 позиции
         return -1
       }
-      if (this.storage.meals.filter((p) => p.name).length != this.storage.meals.length) {
-        this.nameError = 1 // проверяем, везде ли введено название блюда
+      else if (this.storage.meals.filter((p) => p.name).length != this.storage.meals.length) {
+        this.errorList.nameError.status = 1 // проверяем, везде ли введено название блюда
         return -1
       } else if (
         this.fullprice == 0 ||
         this.storage.meals.filter((p) => p.price).length != this.storage.meals.length
       ) {
-        this.priceError = 1 // проверяем, везде ли проставлена цена
+        this.errorList.priceError.status = 1 // проверяем, везде ли проставлена цена
         return -1
       } else if (
-        this.storage.meals.filter((item) => item.eater.filter((curr) => curr == 1).length).length !=
-        this.storage.meals.length
+        this.storage.meals.filter((item) => item.eater.filter((curr) => curr == 1).length).length != this.storage.meals.length
       ) {
         // проверяем, есть ли хотя бы 1 отмеченный пользователь в каждом блюде
-        this.chooseError = 1
+        this.errorList.chooseError.status = 1
         return -1
-      } else this.chooseError = 0
+      } else this.errorList.chooseError.status = 0
     },
     redirect() {
-      if (
-        this.nameError == 0 &&
-        this.priceError == 0 &&
-        this.chooseError == 0 &&
-        this.amountError == 0
-      )
+      for(const error in this.errorList){
+        if( this.errorList[error].status==1)
+        return -1
+      }
         this.$router.push({ path: '/result' }) //переход на странцу результатов если все впорядке
     },
     resetStates() {
-      this.nameError = 0
-      this.priceError = 0
-      this.chooseError = 0
-      this.amountError = 0 //обнуление переменных для удаления сообщения об ошибке
+      for(let error in this.errorList){
+        this.errorList[error].status = 0
+      }
     }
   },
   mounted(){
-    this.AddDebt();
+    this.addDebt();
   },
 }
 </script>
